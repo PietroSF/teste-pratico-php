@@ -10,6 +10,72 @@ $dentista = $statement->fetchAll(PDO::FETCH_OBJ);
 <div class="container mt-2">
   <div class="row justify-content-center">
     <div class="col-md-8">
+      <!-- ========== Start Alerta ========== -->
+      <?php
+      if (isset($_GET["message"]) and $_GET["message"] == "emptyfields") {
+      ?>
+
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          <strong>Erro! </strong> Por favor preencha todos os campos.
+        </div>
+
+      <?php
+      }
+      ?>
+
+      <?php
+      if (isset($_GET["message"]) and $_GET["message"] == "registered") {
+      ?>
+
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          <strong>Sucesso! </strong> Os dados foram cadastrados com sucesso.
+        </div>
+
+      <?php
+      }
+      ?>
+
+      <?php
+      if (isset($_GET["message"]) and $_GET["message"] == "editado") {
+      ?>
+
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          <strong>Sucesso! </strong> Os dados foram atualizados com sucesso.
+        </div>
+
+      <?php
+      }
+      ?>
+
+      <?php
+      if (isset($_GET["message"]) and $_GET["message"] == "error") {
+      ?>
+
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          <strong>Erro! </strong> Tente novamente.
+        </div>
+
+      <?php
+      }
+      ?>
+
+      <?php
+      if (isset($_GET["message"]) and $_GET["message"] == "deleted") {
+      ?>
+
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          <strong>Sucesso! </strong> Os dados foram deletados com sucesso.
+        </div>
+
+      <?php
+      }
+      ?>
+      <!-- ========== End Alerta ========== -->
       <div class="card">
         <div class="card-header">
           Lista de Dentistas
@@ -28,16 +94,16 @@ $dentista = $statement->fetchAll(PDO::FETCH_OBJ);
             </thead>
             <tbody>
               <?php
-              foreach ($dentista as $data) {
+              foreach ($dentista as $entry) {
               ?>
                 <tr>
-                  <td scope="row"><?php echo $data->id; ?> </td>
-                  <td><?php echo $data->nome; ?></td>
-                  <td><?php echo $data->email; ?></td>
-                  <td><?php echo $data->cro; ?></td>
-                  <td><?php echo $data->cro_uf; ?> </td>
-                  <td>Editar</td>
-                  <td>Apagar</td>
+                  <td scope="row"><?php echo $entry->id; ?> </td>
+                  <td><?php echo $entry->nome; ?></td>
+                  <td><?php echo $entry->email; ?></td>
+                  <td><?php echo $entry->cro; ?></td>
+                  <td><?php echo $entry->cro_uf; ?> </td>
+                  <td><a href="edit.php?id=<?php echo $entry->id; ?>"><i class="bi bi-pencil-square text-success"></i></a></td>
+                  <td><a onclick="return confirm('Tem certeza de que quer deletar estes dados?');" href="delete.php?id=<?php echo $entry->id; ?>"><i class="bi bi-trash-fill text-danger"></i></a></td>
                 </tr>
               <?php
               }
@@ -56,27 +122,22 @@ $dentista = $statement->fetchAll(PDO::FETCH_OBJ);
         <form action="register.php" class="p-4" method="POST">
           <div class="mb-3">
             <label for="" class="form-label">Nome: </label>
-            <input type="text" class="form-control" name="txtNome" autofocus>
-          </div>
-          <div class="mb-3">
-            <label for="" class="form-label">Idade: </label>
-            <input type="number" class="form-control" name="txtIdade" autofocus>
+            <input type="text" class="form-control" name="txtName" autofocus required>
           </div>
           <div class="mb-3">
             <label for="" class="form-label">Email:</label>
-            <input type="email" class="form-control" name="" id="" aria-describedby="emailHelpId" placeholder="">
-            <small id="emailHelpId" class="form-text text-muted">Help text</small>
+            <input type="email" class="form-control" name="txtEmail" id="" aria-describedby="emailHelpId" placeholder="" autofocus required>
           </div>
           <div class="mb-3">
             <label for="" class="form-label">CRO: </label>
-            <input type="number" class="form-control" name="txtIdade" autofocus>
+            <input type="number" class="form-control" name="numCro" autofocus required>
           </div>
           <div class="mb-3">
             <label for="" class="form-label">UF: </label>
-            <input type="text" class="form-control" name="txtNome" autofocus>
+            <input type="text" class="form-control" name="charUF" autofocus required>
           </div>
           <div class="d-grid">
-            <input type="hidden" value="1">
+            <input type="hidden" name="id" value="1">
             <input type="submit" class="btn btn-primary" value="Cadastrar">
           </div>
         </form>

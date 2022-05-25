@@ -2,8 +2,7 @@
 $pswd = "root";
 $user = "phpmyadmin";
 $db_name = "processoSeletivo2021_Pietro_Foltran";
-$db;
-
+  
 try {
   $db = new PDO (
     'mysql:host=localhost;
